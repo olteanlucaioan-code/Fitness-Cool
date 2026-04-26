@@ -7,12 +7,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import stripe
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'atestat-fitness-2026'
+app.config['SECRET_KEY'] = 'atestat-fitness-2026-bestie'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gym.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# !!! PUNE AICI CHEIA TA SECRETĂ DE LA STRIPE (cea cu sk_test_...) !!!
-stripe.api_key = "sk_test_PUNE_CHEIA_TA_AICI"
+# !!! AICI PUI CHEIA TA DE LA STRIPE (sk_test_...) !!!
+stripe.api_key = "sk_test_51TQOxULiFOYtlLchfpq0zSALAYu0zqXI7N1lk3ZCvEXZnGTh3SeXHpWSzBzqLd88CkwlRe6QAXxABb6XQDR3BqQ200LmQhvRYA"
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -55,21 +55,21 @@ def login():
         return "Eroare login!"
     return render_template('login.html')
 
-# --- LOGICA STRIPE ---
+# --- LOGICA STRIPE REALĂ ---
 @app.route('/pay/<int:amount>')
 @login_required
-def create_checkout_session(amount):
+def pay(amount):
     try:
-        # Mapăm sumele la nume de produse
+        # Mapăm sumele la nume de abonamente
         titles = {50: "Abonament 1 Zi", 150: "Abonament 7 Zile", 300: "Abonament 30 Zile"}
         
-        checkout_session = stripe.checkout.Session.create(
+        session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
                 'price_data': {
                     'currency': 'ron',
                     'product_data': {'name': titles.get(amount, "Abonament Fitness")},
-                    'unit_amount': amount * 100, # Stripe vrea banii in bani marunti (bani, nu lei)
+                    'unit_amount': amount * 100, # Stripe calculează în bani (nu lei)
                 },
                 'quantity': 1,
             }],
@@ -77,7 +77,7 @@ def create_checkout_session(amount):
             success_url=url_for('payment_success', amount=amount, _external=True),
             cancel_url=url_for('dashboard', _external=True),
         )
-        return redirect(checkout_session.url, code=303)
+        return redirect(session.url, code=303)
     except Exception as e:
         return str(e)
 
@@ -90,13 +90,13 @@ def payment_success(amount):
     else:
         current_user.expiry_date += timedelta(days=days)
     db.session.commit()
-    flash(f"Plată reușită! Ai primit {days} zile de acces.")
     return redirect(url_for('dashboard'))
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
     is_active = current_user.expiry_date > datetime.utcnow()
+    # QR generat cu API extern (fără erori de path)
     qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MEMBRU_{current_user.username}"
     return render_template('dashboard.html', user=current_user, is_active=is_active, qr_url=qr_url)
 
