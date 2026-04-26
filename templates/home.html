@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fitness Cool</title>
+    <style>
+        body {
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            /* Folosim imaginea ta care deja merge */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/static/imagine.jpg');
+            background-size: cover; background-position: center; color: white;
+        }
+        .box { 
+            background: rgba(255,255,255,0.1); 
+            padding: 50px; 
+            border-radius: 20px; 
+            backdrop-filter: blur(15px); 
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .btn { 
+            display: block; 
+            width: 220px; 
+            padding: 15px; 
+            margin: 15px auto; 
+            border-radius: 30px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            transition: 0.3s; 
+            font-size: 1.1rem;
+        }
+        .btn-reg { background: #38ef7d; color: black; }
+        .btn-log { border: 2px solid white; color: white; }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4); }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>FITNESS COOL</h1>
+        <p>Abonamente digitale instantanee</p>
+        
+        <a href="/register" class="btn btn-reg">CREEAZĂ CONT</a>
+        <a href="/login" class="btn btn-log">INTRĂ ÎN CONT</a>
+    </div>
+</body>
+</html>

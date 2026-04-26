@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Fitness Cool</title>
+    <style>
+        body {
+            margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('/static/fundal.gif');
+            background-size: cover; background-attachment: fixed; color: white; padding: 20px;
+        }
+        .container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 40px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 450px; text-align: center; }
+        .status { padding: 10px; border-radius: 50px; font-weight: bold; margin: 20px 0; display: inline-block; width: 80%; border: 1px solid; }
+        .active { background: rgba(56, 239, 125, 0.2); color: #38ef7d; border-color: #38ef7d; }
+        .expired { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border-color: #ff4d4d; }
+        .qr-section img { background: white; padding: 10px; border-radius: 10px; margin: 20px 0; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .pricing { display: grid; gap: 15px; margin-top: 25px; }
+        .pay-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 15px; border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: bold; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .pay-btn:hover { background: #38ef7d; color: black; transform: scale(1.03); border-color: #38ef7d; }
+        .vip { border-color: #38ef7d; background: rgba(56, 239, 125, 0.05); }
+        .flash-msg { color: #38ef7d; margin-bottom: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #38ef7d;">FITNESS COOL</h2>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}<div class="flash-msg">{{ message }}</div>{% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <p>Salut, {{ user.username }}!</p>
+        
+        {% if is_active %}
+            <div class="status active">ABONAMENT ACTIV</div>
+            <div class="qr-section">
+                <p>Expiră la: <br><b>{{ user.expiry_date.strftime('%d.%m.%Y %H:%M') }}</b></p>
+                <img src="{{ url_for('static', filename=qr_path) }}" width="180">
+            </div>
+        {% else %}
+            <div class="status expired">ABONAMENT EXPIRAT</div>
+            <p>Alege un pachet pentru acces:</p>
+        {% endif %}
+
+        <div class="pricing">
+            <form action="/create-checkout-session" method="POST" style="display: contents;">
+                <button name="amount" value="50" class="pay-btn">ACCES 24H <span>50 RON</span></button>
+                <button name="amount" value="200" class="pay-btn">7 ZILE <span>200 RON</span></button>
+                <button name="amount" value="2000" class="pay-btn vip">30 ZILE VIP <span>2000 RON</span></button>
+            </form>
+        </div>
+        <br>
+        <a href="/logout" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8em;">Deconectare</a>
+    </div>
+</body>
+</html>

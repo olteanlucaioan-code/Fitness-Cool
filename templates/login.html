@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Gym</title>
+    <style>
+        body {
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/static/fundal.gif');
+            background-size: cover; color: white;
+        }
+        .form-card { background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; backdrop-filter: blur(15px); width: 320px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: rgba(255,255,255,0.2); color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; margin-top: 20px; border-radius: 30px; border: none; background: white; color: #1d2671; font-weight: bold; cursor: pointer; }
+        .error { color: #ff4d4d; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h2>Bine ai revenit!</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}<p class="error">{{ messages[0] }}</p>{% endif %}
+        {% endwith %}
+        <form action="/login" method="POST">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Parolă" required>
+            <button type="submit">LOGARE</button>
+        </form>
+        <p><a href="/register" style="color: white;">Nu ai cont? Înscrie-te</a></p>
+    </div>
+</body>
+</html>
