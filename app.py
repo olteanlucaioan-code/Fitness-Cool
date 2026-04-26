@@ -10,7 +10,7 @@ import qrcode
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret-key-pentru-atestat'
 # Baza de date SQLite
-app.config['SQLALCHEMY_DATABASE_DATABASE_URI'] = 'sqlite:///gym_users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gym_users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
