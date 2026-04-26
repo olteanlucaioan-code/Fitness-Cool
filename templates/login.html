@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login - Gym</title>
+    <title>Login - Fitness Cool</title>
     <style>
         body {
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
@@ -18,15 +18,12 @@
 <body>
     <div class="form-card">
         <h2>Bine ai revenit!</h2>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}<p class="error">{{ messages[0] }}</p>{% endif %}
-        {% endwith %}
         <form action="/login" method="POST">
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="username" placeholder="Utilizator" required>
             <input type="password" name="password" placeholder="Parolă" required>
             <button type="submit">LOGARE</button>
         </form>
-        <p><a href="/register" style="color: white;">Nu ai cont? Înscrie-te</a></p>
+        <p><a href="/register" style="color: white; text-decoration: none;">Nu ai cont? Înscrie-te</a></p>
     </div>
 </body>
 </html>
